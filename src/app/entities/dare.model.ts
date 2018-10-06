@@ -1,5 +1,5 @@
 export interface IDareOpts {
-    name: string;
-    desc: string;
+    title: string;
+    description: string;
     creator: string;
 }

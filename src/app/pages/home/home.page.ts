@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { NavController } from '@ionic/angular';
+import { BaseFireStoreService } from '../../core';
+import { IDareOpts } from '../../entities';
 
 export interface Item { name: string; }
 
@@ -10,17 +12,17 @@ export interface Item { name: string; }
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
-  private itemDoc: AngularFirestoreDocument<Item>;
-  item: Observable<Item>;
-  constructor(private afs: AngularFirestore, public navCtrl: NavController) {
-    this.itemDoc = afs.doc<Item>('items/1');
-    this.item = this.itemDoc.valueChanges();
+  private dares: Observable<IDareOpts[]>;
+
+  constructor(public navCtrl: NavController,
+    private baseFireStore: BaseFireStoreService) {
   }
 
-  update(item: Item) {
-    this.itemDoc.update(item);
+
+  ngOnInit() {
+    this.dares = this.baseFireStore.getCollection<IDareOpts>('dares').valueChanges();
   }
 
   addDare() {

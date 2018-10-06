@@ -12,8 +12,8 @@ export class BaseFireStoreService {
     constructor(private afs: AngularFirestore) {
     }
 
-    getCollection(path: string, queryFn?: QueryFn) {
-        return this.afs.collection(path, queryFn);
+    getCollection<T>(path: string, queryFn?: QueryFn) {
+        return this.afs.collection<T>(path, queryFn);
     }
 
     getDocument(path: string) {

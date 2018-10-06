@@ -1,15 +1,31 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    Add a Dare
+    <ion-title>
+      Add a Dare
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 
 <ion-content padding>
-  <ion-button  (click)="addDare()">Add Dare</ion-button>
+
+  <form [formGroup]="form">
+    <ion-item>
+      <ion-label position="floating">Title</ion-label>
+      <ion-input formControlName="title"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Description</ion-label>
+      <ion-textarea formControlName="description"></ion-textarea>
+    </ion-item>
+    <!-- form.get('name')?.hasError('required') -->
+
+    <ion-button (click)="submit()" [disabled]="!form.valid">Add Dare</ion-button>
+  </form>
+  <ion-button (click)="cancel()" color="danger">Cancel</ion-button>
+
+
 
 
 </ion-content>

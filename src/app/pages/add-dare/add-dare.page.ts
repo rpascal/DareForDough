@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseFireStoreService } from '../../core';
-import {  IDareOpts } from '../../entities';
+import { IDareOpts } from '../../entities';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoggerService } from '../../core/logger';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-add-dare',
@@ -8,19 +11,43 @@ import {  IDareOpts } from '../../entities';
   styleUrls: ['./add-dare.page.scss'],
 })
 export class AddDarePage implements OnInit {
+  private form: FormGroup;
 
-  constructor(private baseFireStore: BaseFireStoreService) { }
+  constructor(
+    private navCtrl: NavController,
+    private baseFireStore: BaseFireStoreService,
+    private formBuilder: FormBuilder,
+    private logger: LoggerService) { }
+
 
   ngOnInit() {
+    this.form = this.formBuilder.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+    });
+
   }
 
-  addDare() {
-    const dare: IDareOpts = {
-      name: 'Hi',
-      desc: 'This is a test',
-      creator: 'Ryan'
-    };
-    this.baseFireStore.getCollection('dares').add({ ...dare });
+  async submit() {
+    if (this.form.invalid) {
+      return;
+    }
+    try {
+
+      await this.baseFireStore.getCollection('dares').add({ ...this.form.getRawValue(), 
+        creator: 'Admin',
+        createdOn: Date.now()
+      });
+      this.logger.presentToast('Added Dare');
+      this.navCtrl.goBack();
+    } catch (err) {
+      this.logger.presentToast('Error creating dare');
+    }
+  }
+
+  cancel() {
+    this.navCtrl.navigateRoot('');
+
   }
 
 }

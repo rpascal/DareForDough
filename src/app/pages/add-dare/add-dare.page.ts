@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { BaseFireStoreService } from '../../core';
+import {  IDareOpts } from '../../entities';
 
 @Component({
   selector: 'app-add-dare',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddDarePage implements OnInit {
 
-  constructor() { }
+  constructor(private baseFireStore: BaseFireStoreService) { }
 
   ngOnInit() {
+  }
+
+  addDare() {
+    const dare: IDareOpts = {
+      name: 'Hi',
+      desc: 'This is a test',
+      creator: 'Ryan'
+    };
+    this.baseFireStore.getCollection('dares').add({ ...dare });
   }
 
 }

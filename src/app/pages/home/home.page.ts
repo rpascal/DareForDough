@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { NavController } from '@ionic/angular';
+import { NavController, PopoverController } from '@ionic/angular';
 import { BaseFireStoreService } from '../../core';
 import { IDareOpts } from '../../entities';
+import { SettingPopoverComponent } from '../../shared/setting-popover/setting-popover.component';
 
 export interface Item { name: string; }
 
@@ -17,7 +18,8 @@ export class HomePage implements OnInit {
   private dares: Observable<IDareOpts[]>;
 
   constructor(public navCtrl: NavController,
-    private baseFireStore: BaseFireStoreService) {
+    private baseFireStore: BaseFireStoreService,
+    private popoverController: PopoverController) {
   }
 
 
@@ -27,6 +29,13 @@ export class HomePage implements OnInit {
 
   addDare() {
     this.navCtrl.navigateForward('add-dare');
+  }
+
+  async presentSettings() {
+    const popover = await this.popoverController.create({
+      component: SettingPopoverComponent
+    });
+    return await popover.present();
   }
 
 

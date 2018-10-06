@@ -10,16 +10,18 @@ import {
 } from '@angular/router';
 
 import { Observable, of } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap, map } from 'rxjs/operators';
 
 import { CoreModule } from '../core.module';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({
     providedIn: CoreModule
 })
 export class AuthorizationGuard implements CanActivate {
     constructor(
-        private router: Router
+        private router: Router,
+        public afAuth: AngularFireAuth
     ) { }
 
     canActivate(
@@ -31,7 +33,12 @@ export class AuthorizationGuard implements CanActivate {
 
 
     authorize(queryParms: Params): Observable<boolean> {
-        return of(true).pipe(tap(authorized => this.checkRedirect(authorized)));
+        return this.afAuth.user.pipe(
+            map(user => {
+                console.log(user);
+                return user !== null;
+            }),
+            tap(authorized => this.checkRedirect(authorized)));
     }
 
     private checkRedirect(isAuthorized: boolean): void {

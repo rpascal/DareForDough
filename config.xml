@@ -3,7 +3,7 @@
     <name>dare-for-dough</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content original-src="index.html" src="http://10.180.204.80:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -88,6 +88,7 @@
         <variable name="WEB_APPLICATION_CLIENT_ID" value="653958597964-ct9aferlisrok94gvfdhhcp4uvgebrr7.apps.googleusercontent.com" />
         <variable name="PLAY_SERVICES_VERSION" value="11.8.0" />
     </plugin>
-    <allow-navigation href="http://10.180.204.80:8100" sessionid="7340a953" />
+    <plugin name="cordova-plugin-media-capture" spec="3.0.2" />
+    <plugin name="cordova-plugin-file" spec="6.0.1" />
     <engine name="android" spec="7.1.1" />
 </widget>

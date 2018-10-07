@@ -8,23 +8,30 @@
 </ion-header>
 
 <ion-content padding>
-  <input type="file" (change)="uploadFile($event)" />
-  <div>{{ uploadPercent | async }}</div>
-  
+  <span *ngIf="isUploading">Uploading Data...</span>
+  <ng-container *ngIf="!isCordova && !isUploading">
+    <input type="file" (change)="uploadFile($event)" />
+    <div>{{ uploadPercent | async }}</div>
+  </ng-container>
+
+  <ng-container *ngIf="isCordova && !isUploading">
+      <ion-button (click)="recordVid()" shape="round" color="primary" >Record</ion-button>
+    </ng-container>
+
   <a [href]="downloadURL | async">{{ downloadURL | async }}</a>
-  
-    <ion-card *ngFor="let vid of vids | async">
-      <ion-card-header>
-        <ion-card-title>{{vid.from}}</ion-card-title>
-      </ion-card-header>
-  
-      <ion-card-content class="videoCard">
-        <vg-player>
-          <video [vgMedia]="media" #media id="singleVideo" preload="auto" controls>
-            <source [src]="vid.videoUrl" type="video/mp4">
-          </video>
-        </vg-player>
-      </ion-card-content>
-    </ion-card>
+
+  <ion-card *ngFor="let vid of vids | async">
+    <ion-card-header>
+      <ion-card-title>{{vid.from}}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content class="videoCard">
+      <vg-player>
+        <video [vgMedia]="media" #media id="singleVideo" preload="auto" controls>
+          <source [src]="vid.videoUrl" type="video/mp4">
+        </video>
+      </vg-player>
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>

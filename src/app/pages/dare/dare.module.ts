@@ -11,6 +11,9 @@ import { VgOverlayPlayModule } from 'videogular2/overlay-play';
 import { VgControlsModule } from 'videogular2/controls';
 import { VgCoreModule } from 'videogular2/core';
 
+import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture/ngx';
+import { File } from '@ionic-native/file/ngx';
+
 const routes: Routes = [
   {
     path: '',
@@ -29,6 +32,7 @@ const routes: Routes = [
     VgOverlayPlayModule,
     VgBufferingModule
   ],
-  declarations: [DarePage]
+  declarations: [DarePage],
+  providers: [MediaCapture, File]
 })
-export class DarePageModule {}
+export class DarePageModule { }

@@ -13,6 +13,7 @@ import { VgCoreModule } from 'videogular2/core';
 
 import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { SharedModule } from '../../shared/shared.module';
 
 const routes: Routes = [
   {
@@ -30,7 +31,8 @@ const routes: Routes = [
     VgCoreModule,
     VgControlsModule,
     VgOverlayPlayModule,
-    VgBufferingModule
+    VgBufferingModule,
+    SharedModule
   ],
   declarations: [DarePage],
   providers: [MediaCapture, File]

@@ -8,8 +8,8 @@
 </ion-header>
 
 <ion-content padding>
-
-  <ion-label>Time Remaining: {{(counter$ | async)?.hours}} hrs {{(counter$ | async)?.mins}} mins {{(counter$ | async)?.seconds}} secs</ion-label>
+<app-count-down-timer *ngIf="createdOnDate" [date]="createdOnDate"></app-count-down-timer>
+  <!-- <ion-label>Time Remaining: {{(counter$ | async)?.hours}} hrs {{(counter$ | async)?.mins}} mins {{(counter$ | async)?.seconds}} secs</ion-label> -->
 
   <ion-button (click)="presentActionSheet()" expand="full" color="dark">Order by Filters</ion-button>
 

@@ -28,7 +28,7 @@ export class HomePage implements OnInit {
 
 
   ngOnInit() {
-    this.dares = this.baseFireStore.getCollection<IDareOpts>('dares').snapshotChanges()
+    this.dares = this.baseFireStore.getCollection<IDareOpts>('dares', query => query.orderBy("createdOn", "desc")).snapshotChanges()
       .pipe(map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data() as IDareOpts;

@@ -51,7 +51,6 @@ export class DarePage implements OnInit, OnDestroy {
         .then(
           (data: MediaFile[]) => {
             data.forEach(async item => {
-              alert(JSON.stringify(item));
               this.isUploading = true;
               try {
                 const path = item.fullPath.replace(item.name, '');

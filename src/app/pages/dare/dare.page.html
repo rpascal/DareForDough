@@ -8,6 +8,8 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-button (click)="presentActionSheet()" expand="full" color="dark">Order by Filters</ion-button>
+
   <span *ngIf="isUploading">Uploading Data...</span>
   <ng-container *ngIf="!isCordova && !isUploading">
     <input type="file" (change)="uploadFile($event)" />
@@ -15,7 +17,7 @@
   </ng-container>
 
   <ng-container *ngIf="isCordova && !isUploading">
-    <ion-button (click)="recordVid()" shape="round" color="primary">Record</ion-button>
+    <ion-button (click)="recordVid()" expand="full" color="primary">Record</ion-button>
   </ng-container>
 
 
@@ -25,11 +27,18 @@
     </ion-card-header>
 
     <ion-card-content class="videoCard">
-      <vg-player align-self-center>
+      <vg-player margin-bottom>
         <video [vgMedia]="media" #media id="singleVideo" preload="auto" controls>
           <source [src]="vid.videoUrl" type="video/mp4">
         </video>
       </vg-player>
+
+      <ion-badge (click)="like(vid)">
+        <ion-icon name="thumbs-up"></ion-icon> {{vid.likes}}
+      </ion-badge>
+      <ion-badge margin-start	 color="danger" (click)="dislike(vid)">
+        <ion-icon name="thumbs-down"></ion-icon> {{vid.dislikes}}
+      </ion-badge>
     </ion-card-content>
   </ion-card>
 

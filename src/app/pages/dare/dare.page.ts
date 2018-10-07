@@ -2,11 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IDareOpts } from '../../entities';
 import { NavService, BaseFireStoreService } from '../../core';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { Observable, forkJoin, zip, Subject } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { Observable, forkJoin, zip, Subject, BehaviorSubject } from 'rxjs';
+import { finalize, takeUntil, map, switchMap } from 'rxjs/operators';
 import { FirebaseAuth } from '@angular/fire';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { NavController, Platform } from '@ionic/angular';
+import { NavController, Platform, ActionSheetController } from '@ionic/angular';
 import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture/ngx';
 import { File } from '@ionic-native/file/ngx';
 
@@ -30,6 +30,8 @@ export class DarePage implements OnInit, OnDestroy {
   isCordova: boolean = false;
 
   isUploading = false;
+  orderBy$ = new BehaviorSubject<string>("likes");
+
 
   constructor(private navService: NavService<IDareOpts>,
     private navCtrl: NavController,
@@ -38,10 +40,32 @@ export class DarePage implements OnInit, OnDestroy {
     private storage: AngularFireStorage,
     private platform: Platform,
     private mediaCapture: MediaCapture,
+    public actionSheetController: ActionSheetController,
     private file: File) {
     this.stop$ = new Subject<void>();
     this.isCordova = this.platform.is("cordova");
   }
+
+  async presentActionSheet() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Order By',
+      buttons: [{
+        text: 'Likes',
+        icon: 'thumbs-up',
+        handler: () => {
+          this.orderBy$.next("likes");
+        }
+      }, {
+        text: 'Dislikes',
+        icon: 'thumbs-down',
+        handler: () => {
+          this.orderBy$.next("dislikes");
+        }
+      }]
+    });
+    await actionSheet.present();
+  }
+
 
   recordVid() {
     if (this.isCordova) {
@@ -100,7 +124,9 @@ export class DarePage implements OnInit, OnDestroy {
           if (user && downloadUrl) {
             this.baseFireStore.getDocument(`dares/${this.navService.data.id}`).collection('vids').add({
               videoUrl: downloadUrl,
-              from: user.email
+              from: user.email,
+              likes: 0,
+              dislikes: 0
             }).then(res => {
               console.log(res);
               this.isUploading = false;
@@ -118,12 +144,31 @@ export class DarePage implements OnInit, OnDestroy {
       .subscribe()
   }
 
+  like(vid) {
+    this.baseFireStore.getDocument(`dares/${this.navService.data.id}/vids/${vid.id}`).update({ likes: ((vid.likes || 0) + 1) });
+  }
+  dislike(vid) {
+    this.baseFireStore.getDocument(`dares/${this.navService.data.id}/vids/${vid.id}`).update({ dislikes: ((vid.dislikes || 0) + 1) });
+  }
+
   ngOnInit() {
     this.dare = this.navService.data;
     if (!this.dare) {
       this.navCtrl.navigateRoot('/');
     } else {
-      this.vids = this.baseFireStore.getCollection<any>(`dares/${this.navService.data.id}/vids`).valueChanges();
+
+      this.vids = this.orderBy$.pipe(
+        switchMap(orderby =>
+          this.baseFireStore.getCollection<any>(`dares/${this.navService.data.id}/vids`, ref => ref.orderBy(orderby, 'desc')).snapshotChanges()
+            .pipe(map(actions => {
+              return actions.map(a => {
+                const data = a.payload.doc.data();
+                const id = a.payload.doc.id;
+                return { id: id, ...data };
+              });
+            }))
+        )
+      );
     }
   }
 

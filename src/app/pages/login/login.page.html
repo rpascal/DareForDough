@@ -5,5 +5,27 @@
 </ion-header> -->
 
 <ion-content padding>
+
+    <form [formGroup]="form">
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input type="email" formControlName="email"></ion-input>
+        </ion-item>
+    
+        <ion-item>
+          <ion-label position="floating">Password</ion-label>
+          <ion-input type="password" formControlName="password"></ion-input>
+        </ion-item>
+        <!-- form.get('name')?.hasError('required') -->
+    
+        <ion-button (click)="basicLogin()" shape="round" color="primary" [disabled]="!form.valid">Login Email</ion-button>
+      
+        <ion-button (click)="doRegister()" shape="round" color="primary" [disabled]="!form.valid">Register</ion-button>
+      </form>
+
+
   <ion-button (click)="login()" shape="round" color="primary">Login with Google</ion-button>
+
+  {{err | json}}
+
 </ion-content>

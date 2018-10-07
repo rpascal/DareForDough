@@ -11,7 +11,7 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./add-dare.page.scss'],
 })
 export class AddDarePage implements OnInit {
-  private form: FormGroup;
+  form: FormGroup;
 
   constructor(
     private navCtrl: NavController,

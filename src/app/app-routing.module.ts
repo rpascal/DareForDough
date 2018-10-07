@@ -6,7 +6,8 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', canActivate: [AuthorizationGuard], loadChildren: './pages/home/home.module#HomePageModule' },
   { path: 'add-dare', canActivate: [AuthorizationGuard], loadChildren: './pages/add-dare/add-dare.module#AddDarePageModule' },
-  { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' },
+  { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' },  { path: 'dare', loadChildren: './pages/dare/dare.module#DarePageModule' },
+
 ];
 
 @NgModule({

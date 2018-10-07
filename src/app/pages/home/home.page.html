@@ -12,7 +12,7 @@
 
 <ion-content padding>
 
-  <ion-card *ngFor="let dare of dares | async">
+  <ion-card *ngFor="let dare of dares | async" (click)="selectDare(dare)">
     <ion-card-header>
       <ion-card-title>{{dare.title}}</ion-card-title>
       <ion-card-subtitle>{{dare.creator}}</ion-card-subtitle>

@@ -13,6 +13,7 @@ import { SharedModule } from './shared/shared.module';
 
 
 
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -21,7 +22,7 @@ import { SharedModule } from './shared/shared.module';
     IonicModule.forRoot(),
     AppRoutingModule,
     CoreModule,
-    SharedModule
+    SharedModule,
   ],
   providers: [
     StatusBar,

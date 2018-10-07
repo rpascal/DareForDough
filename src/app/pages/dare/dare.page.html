@@ -25,9 +25,6 @@
 
 
   <ion-card *ngFor="let vid of vids | async">
-    <ion-card-header>
-      <ion-card-title>{{vid.from}}</ion-card-title>
-    </ion-card-header>
 
     <ion-card-content class="videoCard">
       <vg-player margin-bottom>
@@ -35,6 +32,8 @@
           <source [src]="vid.videoUrl" type="video/mp4">
         </video>
       </vg-player>
+
+      <ion-label>From: {{vid.from}}</ion-label>
 
       <ion-badge (click)="like(vid)">
         <ion-icon name="thumbs-up"></ion-icon> {{vid.likes}}

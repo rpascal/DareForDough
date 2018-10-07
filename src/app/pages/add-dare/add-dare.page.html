@@ -6,10 +6,17 @@
       <ion-input formControlName="title"></ion-input>
     </ion-item>
 
+    <ion-item>
+      <ion-label position="floating">Bounty</ion-label>
+      <ion-input type="number" formControlName="bounty"></ion-input>
+    </ion-item>
+
+
     <ion-item margin-bottom>
       <ion-label position="floating">Description</ion-label>
       <ion-textarea formControlName="description"></ion-textarea>
     </ion-item>
+
 
     <ion-button margin-bottom (click)="submit()" expand="full" color="dark" [disabled]="!form.valid">Add Dare</ion-button>
   </form>

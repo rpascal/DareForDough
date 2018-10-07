@@ -28,6 +28,7 @@ export class AddDarePage implements OnInit {
     this.form = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
+      bounty: [0, Validators.required]
     });
 
   }

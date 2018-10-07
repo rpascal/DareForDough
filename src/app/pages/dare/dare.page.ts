@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IDareOpts } from '../../entities';
 import { NavService, BaseFireStoreService } from '../../core';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { Observable, forkJoin, zip, Subject, BehaviorSubject } from 'rxjs';
+import { Observable, forkJoin, zip, Subject, BehaviorSubject, interval } from 'rxjs';
 import { finalize, takeUntil, map, switchMap } from 'rxjs/operators';
 import { FirebaseAuth } from '@angular/fire';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -32,6 +32,7 @@ export class DarePage implements OnInit, OnDestroy {
   isUploading = false;
   orderBy$ = new BehaviorSubject<string>("likes");
 
+  counter$: Observable<any>;
 
   constructor(private navService: NavService<IDareOpts>,
     private navCtrl: NavController,
@@ -151,11 +152,36 @@ export class DarePage implements OnInit, OnDestroy {
     this.baseFireStore.getDocument(`dares/${this.navService.data.id}/vids/${vid.id}`).update({ dislikes: ((vid.dislikes || 0) + 1) });
   }
 
+  getCounter() {
+    return this.baseFireStore.getDocument(`dares/${this.navService.data.id}/`).valueChanges().pipe(
+      switchMap(data => {
+        const createdOn = new Date(data['createdOn']);
+        createdOn.setDate(createdOn.getDate() + 1);
+        return interval(1000).pipe(
+          map((x) => {
+            const milliSeconds = createdOn.getTime() - new Date().getTime();
+
+            const seconds = (milliSeconds / 1000) % 60;
+            const minutes = ((milliSeconds / (1000 * 60)) % 60);
+            const hours = ((milliSeconds / (1000 * 60 * 60)) % 24);
+            return {
+              seconds: Math.floor(seconds),
+              mins: Math.floor(minutes),
+              hours: Math.floor(hours)
+            }
+          }));
+      })
+    );
+
+  }
+
   ngOnInit() {
     this.dare = this.navService.data;
     if (!this.dare) {
       this.navCtrl.navigateRoot('/');
     } else {
+      this.counter$ = this.getCounter();
+
 
       this.vids = this.orderBy$.pipe(
         switchMap(orderby =>

@@ -6,6 +6,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { DarePage } from './dare.page';
+import { VgBufferingModule } from 'videogular2/buffering';
+import { VgOverlayPlayModule } from 'videogular2/overlay-play';
+import { VgControlsModule } from 'videogular2/controls';
+import { VgCoreModule } from 'videogular2/core';
 
 const routes: Routes = [
   {
@@ -19,7 +23,11 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule
   ],
   declarations: [DarePage]
 })

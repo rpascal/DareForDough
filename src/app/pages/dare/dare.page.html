@@ -3,12 +3,28 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Dare</ion-title>
+    <ion-title>{{dare?.title}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <h1>{{dare.title}}</h1>
-
+  <input type="file" (change)="uploadFile($event)" />
+  <div>{{ uploadPercent | async }}</div>
+  
+  <a [href]="downloadURL | async">{{ downloadURL | async }}</a>
+  
+    <ion-card *ngFor="let vid of vids | async">
+      <ion-card-header>
+        <ion-card-title>{{vid.from}}</ion-card-title>
+      </ion-card-header>
+  
+      <ion-card-content class="videoCard">
+        <vg-player>
+          <video [vgMedia]="media" #media id="singleVideo" preload="auto" controls>
+            <source [src]="vid.videoUrl" type="video/mp4">
+          </video>
+        </vg-player>
+      </ion-card-content>
+    </ion-card>
 
 </ion-content>

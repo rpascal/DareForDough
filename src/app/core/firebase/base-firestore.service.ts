@@ -20,6 +20,10 @@ export class BaseFireStoreService {
         return this.afs.doc(path);
     }
 
+    getId(): string {
+        return this.afs.createId();
+    }
+
 
 
 }

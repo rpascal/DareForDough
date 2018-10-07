@@ -6,6 +6,7 @@ import { BaseFireStoreService, NavService } from '../../core';
 import { IDareOpts } from '../../entities';
 import { SettingPopoverComponent } from '../../shared/setting-popover/setting-popover.component';
 import { map } from 'rxjs/operators';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 export interface Item { name: string; }
 
@@ -19,6 +20,7 @@ export class HomePage implements OnInit {
   dares: Observable<IDareOpts[]>;
 
   constructor(public navCtrl: NavController,
+    public afAuth: AngularFireAuth,
     private baseFireStore: BaseFireStoreService,
     private popoverController: PopoverController,
     private navService: NavService<IDareOpts>) {
@@ -50,6 +52,14 @@ export class HomePage implements OnInit {
   selectDare(dare: IDareOpts) {
     this.navService.data = dare;
     this.navCtrl.navigateForward("/dare");
+  }
+
+  async logout(){
+    await this.afAuth.auth.signOut();
+    window.location.href = '/';
+
+    // this.navCtrl.navigateRoot("/");
+
   }
 
 }

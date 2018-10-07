@@ -1,31 +1,22 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-title>Please Login!</ion-title>
-  </ion-toolbar>
-</ion-header> -->
-
 <ion-content padding>
 
-    <form [formGroup]="form">
-        <ion-item>
-          <ion-label position="floating">Email</ion-label>
-          <ion-input type="email" formControlName="email"></ion-input>
-        </ion-item>
-    
-        <ion-item>
-          <ion-label position="floating">Password</ion-label>
-          <ion-input type="password" formControlName="password"></ion-input>
-        </ion-item>
-        <!-- form.get('name')?.hasError('required') -->
-    
-        <ion-button (click)="basicLogin()" shape="round" color="primary" [disabled]="!form.valid">Login Email</ion-button>
-      
-        <ion-button (click)="doRegister()" shape="round" color="primary" [disabled]="!form.valid">Register</ion-button>
-      </form>
 
+  <form [formGroup]="form">
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="email" formControlName="email"></ion-input>
+    </ion-item>
 
-  <ion-button (click)="login()" shape="round" color="primary">Login with Google</ion-button>
+    <ion-item margin-bottom>
+      <ion-label position="floating">Password</ion-label>
+      <ion-input type="password" formControlName="password"></ion-input>
+    </ion-item>
 
-  {{err | json}}
+    <ion-button margin-bottom (click)="basicLogin()" expand="full"  color="dark" [disabled]="!form.valid">Login
+      Email</ion-button>
+    <ion-button margin-bottom (click)="doRegister()" expand="full"  color="dark" [disabled]="!form.valid">Register</ion-button>
+  </form>
+
+  <ion-button *ngIf="!isCordova" (click)="login()" expand="full"  color="dark">Login with Google</ion-button>
 
 </ion-content>

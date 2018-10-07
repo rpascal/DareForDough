@@ -19,6 +19,7 @@ export class LoginPage implements OnInit {
 
   err: any;
   form: FormGroup;
+  isCordova: boolean = false;
 
   constructor(public afAuth: AngularFireAuth,
     private navCtrl: NavController,
@@ -27,6 +28,8 @@ export class LoginPage implements OnInit {
     private logger: LoggerService,
     private platform: Platform,
     private fb: FormBuilder) {
+      this.isCordova = this.platform.is("cordova");
+
   }
 
   ngOnInit() {
